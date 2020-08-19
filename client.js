@@ -21,4 +21,4 @@ class Lobbies {
   close() {}
 }
 
-export default Lobbies;
+window.Lobbies = Lobbies;
