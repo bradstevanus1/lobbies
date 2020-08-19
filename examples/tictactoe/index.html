@@ -9,14 +9,56 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
 
     <title>Tic Tac Toe!</title>
+
+    <style>
+      div .square {
+        min-height: 200px;
+        min-width: 200px;
+        background-color: lightsteelblue;
+        border: 1px solid dodgerblue;
+      }
+    </style>
   </head>
   <body>
-    <h1>Tic Tac Toe!</h1>
+    <div class="container">
+      <div class="row">
+        <div class="col">
+          <h1>Tic Tac Toe!</h1>
+        </div>
+      </div>
+      <div id="game"></div>
+    </div>
 
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>
+
+    <script>
+      $(function() {
+        // representation of our tic-tac-toe game board
+        const board = [
+          [null, null, null],
+          [null, null, null],
+          [null, null, null]
+        ];
+
+        // create the game UI
+        for (let row = 0; row < board.length; row++) {
+          const rowDiv = $(`<div class="row"></div>`);
+          $('#game').append(rowDiv);
+
+          for (let col = 0; col < board[row].length; col++) {
+            rowDiv.append(`<div class="col square" data-row="${row}" data-col="${col}"></div>`);
+          }
+        }
+
+        $('.square').click(function() {
+          const square = event.target;
+          console.log(`${square.dataset.row}, ${square.dataset.col}`);
+        })
+      });
+    </script>
   </body>
 </html>
