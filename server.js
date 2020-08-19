@@ -1,10 +1,15 @@
 const app = require("express")();
 const http = require("http").createServer(app);
 const io = require("socket.io")(http);
+const cors = require("cors");
 
 app.get("/", (req, res) => {
   res.sendFile(__dirname + "/index.html");
 });
+
+app.get("/client.js", cors(), (req, res) => {
+  res.sendFile(__dirname + "/dist/client.js");
+})
 
 // Handle incoming requests from clients
 io.on("connection", (socket) => {

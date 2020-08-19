@@ -44,4 +44,4 @@ class Lobbies {
   }
 }
 
-export default Lobbies;
+window.Lobbies = Lobbies;
