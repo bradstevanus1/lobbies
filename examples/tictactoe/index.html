@@ -11,11 +11,24 @@
     <title>Tic Tac Toe!</title>
 
     <style>
-      div .square {
+      div.square {
         min-height: 200px;
-        min-width: 200px;
+        max-width: 200px;
         background-color: lightsteelblue;
         border: 1px solid dodgerblue;
+        position: relative;
+        font-weight: bold;
+        font-size: 64px;
+      }
+
+      div.square:before {
+        content: attr(data-move);
+        position: absolute;
+        white-space: pre;
+        display: inline;
+        top: 0;
+        left: 50%;
+        transform: translate(-50%, 50px);
       }
     </style>
   </head>
@@ -44,6 +57,8 @@
           [null, null, null]
         ];
 
+        let myTurn = true;
+
         // create the game UI
         for (let row = 0; row < board.length; row++) {
           const rowDiv = $(`<div class="row"></div>`);
@@ -56,8 +71,10 @@
 
         $('.square').click(function() {
           const square = event.target;
-          console.log(`${square.dataset.row}, ${square.dataset.col}`);
-        })
+
+          square.dataset.move = myTurn ? "X" : "O";
+          myTurn = !myTurn;
+        });
       });
     </script>
   </body>
