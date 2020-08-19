@@ -22,10 +22,16 @@
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
     <script>
       $(function () {
-        var socket = io();
+        var socket = io('http://localhost:5000');
         $('form').submit(function(e) {
           e.preventDefault(); // prevents page reloading
-          socket.emit('chat message', $('#m').val());
+          const message = $('#m').val();
+          if (message.startsWith('join ')) {
+            const room = message.split(' ')[1];
+            socket.emit('room', room)
+          } else {
+            socket.emit('chat message', message);
+          }
           $('#m').val('');
           return false;
         });
@@ -34,5 +40,6 @@
         })
       });
     </script>
+    <script type="module" src="test.js"></script>
   </body>
 </html>
