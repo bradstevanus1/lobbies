@@ -1,6 +1,6 @@
 import Lobbies from "./client";
 
-// Person 2
+// Player 1
 const lobbies = new Lobbies("https://localhost:5000");
 const giveToPlayer2 = lobbies.getLobbyName();
 lobbies.onReceive((json) => alert(json));
