@@ -2,9 +2,6 @@ import io from "socket.io-client";
 import { v4 as uuid4 } from "uuid";
 
 class Lobbies {
-  _connected = false;
-  _lobbyName = null;
-
   constructor(url, lobbyName = null) {
     this._socket = io(url);
 
@@ -17,7 +14,7 @@ class Lobbies {
       }
     });
 
-    _lobbyName = lobbyName;
+    this._lobbyName = lobbyName;
   }
 
   send(json) {
