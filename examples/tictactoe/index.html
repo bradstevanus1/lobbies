@@ -32,6 +32,10 @@
         left: 50%;
         transform: translate(-50%, 50px);
       }
+
+      #game {
+        padding-bottom: 10px;
+      }
     </style>
   </head>
   <body>
@@ -42,6 +46,17 @@
         </div>
       </div>
       <div id="game"></div>
+      <div class="row">
+        <div class="col">
+          <button class="btn btn-primary" id="startGame">Start Game</button>
+        </div>
+        <div class="col">
+          <div class="form-group">
+            <input id="gameId" class="form-input" name="gameId" />
+            <button class="btn btn-primary" id="joinGame">Join Game</button>
+          </div>
+        </div>
+      </div>
     </div>
 
     <!-- Optional JavaScript -->
@@ -136,9 +151,15 @@
           const moved = takeTurn(square.dataset.row, square.dataset.col, myTurn ? "X" : "O");
         });
 
-        // create a lobby
-        const lobbies = new Lobbies("http://localhost:5000");
-        lobbies.create();
+        $('#startGame').click(() => {
+          // create a new lobby and display it here
+          $(event.target).parent('div').append(`<span>Game ID goes here</span>`);
+        });
+
+        $('#joinGame').click(() => {
+          // join a game with a given id
+          const gameId = $('#gameId').val();
+        });
       });
     </script>
   </body>
