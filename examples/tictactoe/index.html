@@ -11,6 +11,7 @@
     <title>Tic Tac Toe!</title>
 
     <style>
+      /* styles for the squares on the game board */
       div.square {
         min-height: 200px;
         max-width: 200px;
@@ -21,6 +22,7 @@
         font-size: 64px;
       }
 
+      /* the xs and os are displayed by looking at the "move" data attribute */
       div.square:before {
         content: attr(data-move);
         position: absolute;
@@ -49,13 +51,71 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>
 
     <script>
-      $(function() {
+      $(() => {
         // representation of our tic-tac-toe game board
         const board = [
           [null, null, null],
           [null, null, null],
           [null, null, null]
         ];
+
+        function checkForWin(move) {
+          // check rows
+          for (let i = 0; i < board.length; i++) {
+            const row = board[i];
+            if (row.every(m => m === move)) {
+              return true;
+            }
+          }
+
+          // check cols
+          for (let i = 0; i < board.length; i++) {
+            const col = board.map(row => row[i]);
+            if (col.every(m => m === move)) {
+              return true;
+            }
+          }
+
+          // check diagonals
+          const diag = board.map((row, idx) => row[idx]);
+          if (diag.every(m => m === move)) {
+            return true;
+          }
+
+          const antiDiag = board.map((row, idx) => row[(row.length - 1) - idx]);
+          if (antiDiag.every(m => m === move)) {
+            return true;
+          }
+
+          return false;
+        };
+
+        function takeTurn(row, col, move) {
+          // check to see if this move can be taken
+          if (board[row][col]) {
+            return false;
+          }
+
+          // make the move and check to see if we have a winner (or tie)
+          board[row][col] = move;
+          const winningMove = checkForWin(move);
+          const tieGame = board.every(row => row.every(col => col !== null));
+
+          // update turn state
+          myTurn = !myTurn;
+          
+          // update the UI
+          const square = Array.from(document.querySelectorAll('div.square')).find(e => e.dataset.row === row && e.dataset.col === col);
+          square.dataset.move = move;
+
+          if (winningMove || tieGame) {
+            const gameOverMessage = winningMove ? `${move} wins!` : 'Tie game!';
+            $('#game').append(`<div class="row"><div class="col">${gameOverMessage}</div></div>`);
+            $('.square').off('click');
+          }
+
+          return true;
+        };
 
         let myTurn = true;
 
@@ -69,11 +129,10 @@
           }
         }
 
-        $('.square').click(function() {
+        // when a user clicks a square, we update the square with the corresponding move
+        $('.square').click(() => {
           const square = event.target;
-
-          square.dataset.move = myTurn ? "X" : "O";
-          myTurn = !myTurn;
+          const moved = takeTurn(square.dataset.row, square.dataset.col, myTurn ? "X" : "O");
         });
       });
     </script>
