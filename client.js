@@ -2,23 +2,46 @@ import io from "socket.io-client";
 import { v4 as uuid4 } from "uuid";
 
 class Lobbies {
-  constructor(url) {
+  _connected = false;
+  _lobbyName = null;
+
+  constructor(url, lobbyName = null) {
     this._socket = io(url);
+
+    this._socket.on("connect", () => {
+      if (lobbyName == null) {
+        lobbyName = uuid4().replace("-", "");
+        this._socket.emit("room", lobbyName);
+      } else {
+        this._socket.emit("room", lobbyName);
+      }
+    });
+
+    _lobbyName = lobbyName;
   }
 
-  create() {
-    const lobbyName = uuid4().replace("-", "");
-    console.log(lobbyName);
-    this._socket.emit("room");
+  send(json) {
+    if (!this._connected) {
+      throw new Error(
+        "The connection to the lobby has not been established yet."
+      );
+    }
+    this._socket.emit("send", json);
   }
 
-  join(name) {}
+  onReceive(callback) {
+    this._socket.on("receive", (json) => {
+      callback(json);
+    });
+  }
 
-  send(json) {}
+  leave() {
+    this._socket.emit("disconnect");
+  }
 
-  leave() {}
-
-  close() {}
+  getLobbyName() {
+    return this._lobbyName;
+  }
 }
 
 window.Lobbies = Lobbies;
