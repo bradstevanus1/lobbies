@@ -9,7 +9,7 @@ app.get("/", (req, res) => {
 
 app.get("/client.js", cors(), (req, res) => {
   res.sendFile(__dirname + "/dist/client.js");
-})
+});
 
 // Handle incoming requests from clients
 io.on("connection", (socket) => {

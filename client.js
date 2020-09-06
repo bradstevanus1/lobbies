@@ -8,10 +8,9 @@ class Lobbies {
     this._socket.on("connect", () => {
       if (lobbyName == null) {
         lobbyName = uuid4().replace("-", "");
-        this._socket.emit("room", lobbyName);
-      } else {
-        this._socket.emit("room", lobbyName);
       }
+      this._socket.emit("room", lobbyName);
+      this._connected = true;
     });
 
     this._lobbyName = lobbyName;
